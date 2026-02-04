@@ -48,4 +48,8 @@ async function leaveRoomAPI(roomId) {
     })
 }
 
-export { socket, createRoomAPI, joinRoomAPI, leaveRoomAPI, onRoomUpdateAPI }
+function setReadyAPI(roomId, isReady) {
+    socket.emit('room:ready', roomId, isReady);
+}
+
+export { socket, createRoomAPI, joinRoomAPI, leaveRoomAPI, onRoomUpdateAPI, setReadyAPI }

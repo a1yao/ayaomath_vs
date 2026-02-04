@@ -39,5 +39,15 @@ export class Room {
 
     }
 
+    setReady(player, isReady) {
+        if (!(player.socketId in this.players)) {
+            throw Error("Player is not in this room");
+        }
+
+        this.players[player.socketId].isReady = isReady;
+        console.log(this.players);
+        this.roomSocket.emit("room:update", this.players);
+    }
+
 
 }

@@ -26,3 +26,12 @@ export function leaveRoom(roomId, player) {
         throw new Error('Cannot leave room. Room does not exist');
     }
 }
+
+export function setReady(roomId, player, isReady) {
+    if (roomId in rooms) {
+        rooms[roomId].setReady(player, isReady);
+    }
+    else {
+        throw new Error('Cannot set player ready, room does not exist');
+    }
+}

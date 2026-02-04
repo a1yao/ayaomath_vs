@@ -69,6 +69,19 @@ io.on("connection", (socket) => {
         callback({ status: "ok", room_id: roomId})
     })
 
+    socket.on("room:ready", (roomId, isReady) => {
+        console.log(`[room:ready] Socket ${socket.id} declared ${isReady ? "ready": "unready"}`);
+        
+        // TODO: Error handling?
+        try {
+            RoomManager.setReady(roomId, PlayerManager.players[socket.id], isReady);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    })
+
+
     socket.on("send_message", (data) => {
         socket.to(data.room).emit("receive_message", data)
     })

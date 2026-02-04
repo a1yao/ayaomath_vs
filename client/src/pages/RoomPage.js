@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
-import { socket, joinRoomAPI, leaveRoomAPI, onRoomUpdateAPI } from "../api/SocketAPI";
+import { socket, joinRoomAPI, leaveRoomAPI, onRoomUpdateAPI, setReadyAPI } from "../api/SocketAPI";
 
 function Room() {
     const [ users, setUsers ] = useState({});
+    const [ isReady, setIsReady ] = useState(false);
     const { id } = useParams();
 
     const joinRoom = async (id) => {
@@ -24,6 +25,14 @@ function Room() {
         }
     }
 
+    const readyUp = () => {
+        setIsReady(!isReady);
+    }
+
+    useEffect(() => {
+        setReadyAPI(id, isReady);
+    }, [isReady])
+
     useEffect(() => {
         joinRoom(id);
         onRoomUpdateAPI((data) => {
@@ -43,10 +52,16 @@ function Room() {
 
             <br></br>
             <ul>
-                {Object.keys(users).map(socketId => (
-                    <li key={socketId}>{socketId}</li>
+                {Object.entries(users).map(([socketId, player]) => (
+                    <li 
+                        key={socketId}
+                        style={{ color: player.isReady ? 'green' : 'black' }}
+                    >
+                        {socketId}
+                    </li>
                 ))}
             </ul>
+            <button onClick={readyUp}> {isReady ? "Unready" : "Ready"} </button>
         </div>
     )
 }
