@@ -2,6 +2,8 @@ import { Room } from "./Room.js"
 
 export let rooms = {};
 
+let COUNTDOWN_LENGTH = 6;
+
 export function createRoom(roomId, roomSocket) {
     rooms[roomId] = new Room(roomId, roomSocket);
     console.log(`[room:create] Created room ${roomId}`)
@@ -28,10 +30,13 @@ export function leaveRoom(roomId, player) {
 }
 
 export function setReady(roomId, player, isReady) {
-    if (roomId in rooms) {
-        rooms[roomId].setReady(player, isReady);
-    }
-    else {
+    if (!(roomId in rooms)) {
         throw new Error('Cannot set player ready, room does not exist');
+    }
+        
+    rooms[roomId].setReady(player, isReady);
+
+    if (rooms[roomId].getPlayerCount() == 2 && rooms[roomId].isAllReady()) {
+        rooms[roomId].startCountdown(COUNTDOWN_LENGTH);
     }
 }

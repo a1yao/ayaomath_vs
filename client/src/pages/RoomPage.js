@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
-import { socket, joinRoomAPI, leaveRoomAPI, onRoomUpdateAPI, setReadyAPI } from "../api/SocketAPI";
+import Game from "./GamePage";
+import { joinRoomAPI, leaveRoomAPI, onRoomUpdateAPI, setReadyAPI, onCountdownTickAPI, onGameStartAPI } from "../api/SocketAPI";
 
 function Room() {
+    const [ inGame, setInGame ] = useState(false);
     const [ users, setUsers ] = useState({});
+    const [ countdown, setCountdown ] = useState(null);
     const [ isReady, setIsReady ] = useState(false);
     const { id } = useParams();
 
@@ -41,12 +44,20 @@ function Room() {
             console.log(users);
             
         });
+        onCountdownTickAPI((data) => {
+            console.log("[room:countdown_tick] Countdown ticked: ", data);
+            setCountdown(data);
+        })
+        onGameStartAPI(() => {
+            console.log("[game:start] Game has been started");
+            setInGame(true);
+        })
 
         return () => {
             leaveRoom(id);
         }
     }, [id])
-    return (
+    return inGame ? (<Game/>) : (
         <div>
             <h1> Room Id: {id}</h1>
 
@@ -62,6 +73,8 @@ function Room() {
                 ))}
             </ul>
             <button onClick={readyUp}> {isReady ? "Unready" : "Ready"} </button>
+
+            {countdown}
         </div>
     )
 }

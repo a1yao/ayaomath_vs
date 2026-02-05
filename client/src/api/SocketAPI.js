@@ -21,6 +21,16 @@ function onRoomUpdateAPI(callback) {
     socket.on('room:update', handler);
 }
 
+function onCountdownTickAPI(callback) {
+    const handler = (data) => callback(data);
+    socket.on("room:countdown_tick", handler);
+}
+
+function onGameStartAPI(callback) {
+    const handler = () => callback();
+    socket.on("game:start", handler);
+}
+
 async function joinRoomAPI(roomId) {
     return new Promise((resolve, reject) => {
         socket.emit('room:join', roomId, (response) => {
@@ -52,4 +62,4 @@ function setReadyAPI(roomId, isReady) {
     socket.emit('room:ready', roomId, isReady);
 }
 
-export { socket, createRoomAPI, joinRoomAPI, leaveRoomAPI, onRoomUpdateAPI, setReadyAPI }
+export { socket, createRoomAPI, joinRoomAPI, leaveRoomAPI, onRoomUpdateAPI, setReadyAPI, onCountdownTickAPI, onGameStartAPI }
