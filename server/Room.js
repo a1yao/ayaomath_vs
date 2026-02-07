@@ -100,6 +100,8 @@ export class Room {
                 this.game = new Game(this.roomSocket);
                 this.game.startGame();
 
+                
+
             }
         }, 1000);
     }

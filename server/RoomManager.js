@@ -2,7 +2,7 @@ import { Room } from "./Room.js"
 
 export let rooms = {};
 
-let COUNTDOWN_LENGTH = 6;
+let COUNTDOWN_LENGTH = 3;
 
 export function createRoom(roomId, roomSocket) {
     rooms[roomId] = new Room(roomId, roomSocket);
@@ -38,5 +38,27 @@ export function setReady(roomId, player, isReady) {
 
     if (rooms[roomId].getPlayerCount() == 2 && rooms[roomId].isAllReady()) {
         rooms[roomId].startCountdown(COUNTDOWN_LENGTH);
+    }
+}
+
+export function initGame(roomId) {
+    if (!(roomId in rooms)) {
+        throw new Error('Cannot initialize game, room does not exist');
+    }
+
+    rooms[roomId].game.generateNewQuestion();
+    console.log("Emitting game state for room: ", roomId);
+    rooms[roomId].game.emitGameState();
+}
+
+export function checkAnswer(roomId, player, answer) {
+    if (!(roomId in rooms)) {
+        throw new Error('Cannot initialize game, room does not exist');
+    }
+    var game = rooms[roomId].game;
+    if (game.currentAnswer === Number(answer)) {
+        // TODO: Point system
+        game.generateNewQuestion();
+        game.emitGameState();
     }
 }

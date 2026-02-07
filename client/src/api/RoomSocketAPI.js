@@ -2,7 +2,7 @@ import io from 'socket.io-client'
 
 const socket = io.connect("http://localhost:3001");
 
-async function createRoomAPI() {
+export async function createRoomAPI() {
     return new Promise((resolve, reject) => {
         socket.emit('room:create', (response) => {
             // TODO: error handling
@@ -16,22 +16,35 @@ async function createRoomAPI() {
     })
 }
 
-function onRoomUpdateAPI(callback) {
+export function onRoomUpdateAPI(callback) {
     const handler = (data) => callback(data);
     socket.on('room:update', handler);
 }
 
-function onCountdownTickAPI(callback) {
+export function onCountdownTickAPI(callback) {
     const handler = (data) => callback(data);
     socket.on("room:countdown_tick", handler);
 }
 
-function onGameStartAPI(callback) {
+export function onGameUpdateAPI(callback) {
+    const handler = (data) => callback(data);
+    socket.on("game:state", handler);
+}
+
+export function onGameStartAPI(callback) {
     const handler = () => callback();
     socket.on("game:start", handler);
 }
 
-async function joinRoomAPI(roomId) {
+export function checkAnswer(roomId, answer) {
+    socket.emit("game:check", roomId, answer);
+}
+
+export function joinGameAPI(roomId) {
+    socket.emit('game:join', roomId);
+}
+
+export async function joinRoomAPI(roomId) {
     return new Promise((resolve, reject) => {
         socket.emit('room:join', roomId, (response) => {
             if (response.status === 'ok') {
@@ -45,7 +58,7 @@ async function joinRoomAPI(roomId) {
 }
 
 // TODO: Should this still be structured like this? I left it like this because I wanted to mirror the joinRoomAPI. 
-async function leaveRoomAPI(roomId) {
+export async function leaveRoomAPI(roomId) {
     return new Promise((resolve, reject) => {
         socket.emit('room:leave', roomId, (response) => {
             if (response.status == 'ok') {
@@ -58,8 +71,6 @@ async function leaveRoomAPI(roomId) {
     })
 }
 
-function setReadyAPI(roomId, isReady) {
+export function setReadyAPI(roomId, isReady) {
     socket.emit('room:ready', roomId, isReady);
 }
-
-export { socket, createRoomAPI, joinRoomAPI, leaveRoomAPI, onRoomUpdateAPI, setReadyAPI, onCountdownTickAPI, onGameStartAPI }

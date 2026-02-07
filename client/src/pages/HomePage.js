@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"
 
-import { joinRoomAPI } from "../api/SocketAPI";
+import { joinRoomAPI } from "../api/RoomSocketAPI";
 
 function Home() {
   const [message, setMessage] = useState("");

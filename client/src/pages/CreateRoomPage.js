@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { createRoomAPI } from "../api/SocketAPI";
+import { createRoomAPI } from "../api/RoomSocketAPI";
 
 
 function CreateRoom() {

@@ -1,6 +1,7 @@
 import * as RoomManager from './RoomManager.js';
 import * as PlayerManager from './PlayerManager.js'
 import { createRequire } from "module";
+import { Player } from './Player.js';
 const require = createRequire(import.meta.url);
 
 const express = require("express")
@@ -81,6 +82,29 @@ io.on("connection", (socket) => {
         }
     })
 
+
+    socket.on("game:check", (roomId, answer) => {
+        console.log("[game:check] Check answer received: ", roomId, answer);
+
+        try {
+            RoomManager.checkAnswer(roomId, PlayerManager.players[socket.id], answer);
+        }
+        catch (error) {
+            console.error(error);
+        }
+        
+    })
+
+    socket.on("game:join", (roomId) => {
+        console.log("[game:join] Game join received from room: ", roomId);
+        
+        try {
+            RoomManager.initGame(roomId);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    })
 
     socket.on("send_message", (data) => {
         socket.to(data.room).emit("receive_message", data)
