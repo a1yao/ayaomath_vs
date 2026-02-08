@@ -1,4 +1,5 @@
 import { Room } from "./Room.js"
+import * as PlayerManager from './PlayerManager.js'
 
 export let rooms = {};
 
@@ -56,7 +57,7 @@ export function initGame(roomId) {
 
 export function checkAnswer(roomId, player, answer) {
     if (!(roomId in rooms)) {
-        throw new Error('Cannot initialize game, room does not exist');
+        throw new Error('Cannot check answer, room does not exist');
     }
     var game = rooms[roomId].game;
     console.log("[game:check] Checking answer: ", game.currentAnswer, answer)
@@ -69,8 +70,32 @@ export function checkAnswer(roomId, player, answer) {
         else {
             game.gameState.score += 1;
         }
+
+        var victory = game.checkVictory();
+
         console.log("[game:check] Correct! Generating new quesiton and emitting game state");
         game.generateNewQuestion();
         game.emitGameState();
+
+
     }
+}
+
+
+export function rejoinRoom(roomId, player) {
+    if (!(roomId in rooms)) {
+        throw new Error('Cannot rejoin room, room does not exist');
+    }
+
+    if (player.currentRoomId != roomId) {
+        throw new Error('Cannot rejoin room, player was not in this room');
+    }
+
+    rooms[roomId].resetRoomState();
+
+    // TODO: Does this belong here? Is there a better way to organize this?
+
+    PlayerManager.GetPlayerSocket(player.socketId).emit("game:leave");
+
+
 }

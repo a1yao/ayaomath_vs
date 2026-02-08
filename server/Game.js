@@ -1,5 +1,7 @@
 import * as PlayerManager from './PlayerManager.js'
 
+let VICTORY_SCORE = 5;
+
 export class Game {
     constructor(roomSocket, players) {
         this.roomSocket = roomSocket;
@@ -71,5 +73,19 @@ export class Game {
 
     emitGameState() {
         this.roomSocket.emit("game:state", this.gameState);
+    }
+
+
+    // TODO: Should this not be business logic?
+    checkVictory() {
+        if (this.gameState.score === VICTORY_SCORE) {
+            this.roomSocket.emit("game:victory", 2);
+            return true;
+        }
+        else if (this.gameState.score === VICTORY_SCORE * -1) {
+            this.roomSocket.emit("game:victory", 1);
+            return true;
+        }
+        return false;
     }
 }

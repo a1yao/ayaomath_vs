@@ -83,6 +83,17 @@ io.on("connection", (socket) => {
         }
     })
 
+    socket.on("room:rejoin", (roomId) => {
+        console.log("[room:rejoin] Rejoin room received: ", roomId);
+
+        try {
+            RoomManager.rejoinRoom(roomId, PlayerManager.GetPlayer(socket.id));
+        }
+        catch (error) {
+            console.error(error);
+        }
+    })
+
 
     socket.on("game:check", (roomId, answer) => {
         console.log("[game:check] Check answer received: ", roomId, answer);

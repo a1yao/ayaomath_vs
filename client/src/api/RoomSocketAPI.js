@@ -31,7 +31,7 @@ export function onGameUpdateAPI(callback) {
     socket.on("game:state", handler);
 }
 
-export function onPlayerAssignmentAPI(callback) {
+export function onGamePlayerAssignmentAPI(callback) {
     const handler = (data) => callback(data);
     socket.on("game:player_numbers", handler);
 }
@@ -39,6 +39,20 @@ export function onPlayerAssignmentAPI(callback) {
 export function onGameStartAPI(callback) {
     const handler = () => callback();
     socket.on("game:start", handler);
+}
+
+export function onGameLeaveAPI(callback) {
+    const handler = () => callback();
+    socket.on("game:leave", handler);
+}
+
+export function onGameVictoryAPI(callback) {
+    const handler = (data) => callback(data);
+    socket.on("game:victory", handler);
+}
+
+export function rejoinRoomAPI(roomId) {
+    socket.emit("room:rejoin", roomId);
 }
 
 export function checkAnswer(roomId, answer) {

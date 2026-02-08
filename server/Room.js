@@ -64,7 +64,14 @@ export class Room {
     }
 
 
-    
+    resetRoomState() {
+        for (const key in this.players) {
+            this.players[key].isReady = false;
+            this.players[key].playerNumber = undefined;
+        }
+        this.game = undefined;
+    }
+
 
     getPlayerCount() {
         return Object.keys(this.players).length;

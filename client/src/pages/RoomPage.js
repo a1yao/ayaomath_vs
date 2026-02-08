@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import Game from "./GamePage";
-import { joinRoomAPI, leaveRoomAPI, onRoomUpdateAPI, setReadyAPI, onCountdownTickAPI, onGameStartAPI } from "../api/RoomSocketAPI";
+import { joinRoomAPI, leaveRoomAPI, onRoomUpdateAPI, setReadyAPI, onCountdownTickAPI, onGameStartAPI, onGameLeaveAPI } from "../api/RoomSocketAPI";
 
 function Room() {
     const [ inGame, setInGame ] = useState(false);
@@ -51,6 +51,12 @@ function Room() {
         onGameStartAPI(() => {
             console.log("[game:start] Game has been started");
             setInGame(true);
+        })
+
+        onGameLeaveAPI(() => {
+            console.log("[game:leave] Game left");
+            setInGame(false);
+            setIsReady(false);
         })
 
         return () => {
