@@ -46,6 +46,9 @@ export function initGame(roomId) {
         throw new Error('Cannot initialize game, room does not exist');
     }
 
+    rooms[roomId].game.assignPlayerNumbers();
+
+
     rooms[roomId].game.generateNewQuestion();
     console.log("Emitting game state for room: ", roomId);
     rooms[roomId].game.emitGameState();
@@ -58,6 +61,13 @@ export function checkAnswer(roomId, player, answer) {
     var game = rooms[roomId].game;
     if (game.currentAnswer === Number(answer)) {
         // TODO: Point system
+        if (player.playerNumber === 1) {
+            game.gameState.score -= 1;
+        }
+        else {
+            game.gameState.score += 1;
+        }
+
         game.generateNewQuestion();
         game.emitGameState();
     }

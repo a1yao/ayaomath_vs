@@ -1,8 +1,11 @@
+import * as PlayerManager from './PlayerManager.js'
+
 export class Game {
-    constructor(roomSocket) {
+    constructor(roomSocket, players) {
         this.roomSocket = roomSocket;
-        this.gameState = {}
+        this.gameState = { score: 0 };
         this.currentAnswer = undefined;
+        this.players = players;
     }
 
     generateNewQuestion() {
@@ -48,6 +51,17 @@ export class Game {
         }
         this.gameState.currentQuestion = question;
         this.currentAnswer = answer;
+    }
+
+    // TODO: This is messy in many ways. Emitting a "game:" inside the room.js class along with many other issues
+    assignPlayerNumbers() {
+        var i = 1;
+        for (const key in this.players) {
+            this.players[key].playerNumber = i;
+            i++;
+
+            PlayerManager.GetPlayerSocket(key).emit("game:player_numbers", this.players[key].playerNumber)
+        }
     }
 
     startGame() {

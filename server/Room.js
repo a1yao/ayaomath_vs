@@ -63,6 +63,9 @@ export class Room {
         return true;
     }
 
+
+    
+
     getPlayerCount() {
         return Object.keys(this.players).length;
     }
@@ -97,7 +100,7 @@ export class Room {
                 this.roomSocket.emit("room:update", this.players);
 
                 // TODO: Create and start game
-                this.game = new Game(this.roomSocket);
+                this.game = new Game(this.roomSocket, this.players);
                 this.game.startGame();
 
                 

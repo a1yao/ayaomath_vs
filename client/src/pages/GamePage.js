@@ -8,6 +8,7 @@ const Game = () => {
 
   const [ question, setQuestion ] = useState(null);
   const [ answer, setAnswer ] = useState("");
+  const [ playerNumber, setPlayerNumber ] = useState(null)
   const { id } = useParams();
 
   const handleInputChange = (e) => {
@@ -21,8 +22,15 @@ const Game = () => {
   useEffect(() => {
     SocketAPI.joinGameAPI(id);
 
+    SocketAPI.onPlayerAssignmentAPI((data) => {
+      console.log("[game:player_numbers] Received: ", data);
+      setPlayerNumber(data);
+
+      // TODO: Do we need to use useEffect to enable the answer box once the player number is set? I don't think it is human reactable to answer that fast though?
+    })
+
     SocketAPI.onGameUpdateAPI((data) => {
-      console.log("[game:update] Received: ", data.currentQuestion);
+      console.log("[game:update] Received: ", data);
       setQuestion(data.currentQuestion);
       setAnswer("");
     })

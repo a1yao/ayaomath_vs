@@ -31,6 +31,11 @@ export function onGameUpdateAPI(callback) {
     socket.on("game:state", handler);
 }
 
+export function onPlayerAssignmentAPI(callback) {
+    const handler = (data) => callback(data);
+    socket.on("game:player_numbers", handler);
+}
+
 export function onGameStartAPI(callback) {
     const handler = () => callback();
     socket.on("game:start", handler);

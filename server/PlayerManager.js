@@ -4,8 +4,8 @@ import * as RoomManager from "./RoomManager.js"
 export let players = {};
 
 
-export function AddPlayer(socketId) {
-    players[socketId] = new Player(socketId);
+export function AddPlayer(socketId, playerSocket) {
+    players[socketId] = {player: new Player(socketId), playerSocket: playerSocket};
 }
 
 export function RemovePlayer(socketId) {
@@ -13,10 +13,18 @@ export function RemovePlayer(socketId) {
         throw new Error('Player does not exist');
     }
 
-    const currentRoom = players[socketId].currentRoomId;
+    const currentRoom = players[socketId].player.currentRoomId;
     if (currentRoom) {
-        RoomManager.rooms[currentRoom].leave(players[socketId]);
+        RoomManager.rooms[currentRoom].leave(players[socketId].player);
     }
 
     delete players[socketId];
+}
+
+export function GetPlayer(socketId) {
+    return players[socketId].player;
+}
+
+export function GetPlayerSocket(socketId) {
+    return players[socketId].playerSocket;
 }

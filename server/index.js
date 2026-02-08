@@ -26,7 +26,7 @@ let users = [];
 
 io.on("connection", (socket) => {
     console.log(`[connection] User Connected: ${socket.id}`);
-    PlayerManager.AddPlayer(socket.id);
+    PlayerManager.AddPlayer(socket.id, io.to(socket.id));
 
 
     socket.once("disconnect", () => {
@@ -39,11 +39,12 @@ io.on("connection", (socket) => {
         
         try {
             socket.join(roomId);
-            RoomManager.joinRoom(roomId, PlayerManager.players[socket.id]);
+            RoomManager.joinRoom(roomId, PlayerManager.GetPlayer(socket.id));
 
             callback({ status: "ok"});
         }
         catch (error) {
+            console.log(error);
             callback({ status: "error", description: error.message});
         }
     })
@@ -51,7 +52,7 @@ io.on("connection", (socket) => {
     socket.on("room:leave", (roomId, callback) => {
         console.log(`[room:leave] Leaving room ${roomId}`);
         try {
-            RoomManager.leaveRoom(roomId, PlayerManager.players[socket.id]);
+            RoomManager.leaveRoom(roomId, PlayerManager.GetPlayer(socket.id));
             socket.leave(roomId);
             callback({status: "ok"});
         }
@@ -75,7 +76,7 @@ io.on("connection", (socket) => {
         
         // TODO: Error handling?
         try {
-            RoomManager.setReady(roomId, PlayerManager.players[socket.id], isReady);
+            RoomManager.setReady(roomId, PlayerManager.GetPlayer(socket.id), isReady);
         }
         catch (error) {
             console.error(error);
@@ -87,7 +88,7 @@ io.on("connection", (socket) => {
         console.log("[game:check] Check answer received: ", roomId, answer);
 
         try {
-            RoomManager.checkAnswer(roomId, PlayerManager.players[socket.id], answer);
+            RoomManager.checkAnswer(roomId, PlayerManager.GetPlayer(socket.id), answer);
         }
         catch (error) {
             console.error(error);
