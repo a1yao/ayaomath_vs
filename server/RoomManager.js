@@ -59,7 +59,9 @@ export function checkAnswer(roomId, player, answer) {
         throw new Error('Cannot initialize game, room does not exist');
     }
     var game = rooms[roomId].game;
+    console.log("[game:check] Checking answer: ", game.currentAnswer, answer)
     if (game.currentAnswer === Number(answer)) {
+
         // TODO: Point system
         if (player.playerNumber === 1) {
             game.gameState.score -= 1;
@@ -67,7 +69,7 @@ export function checkAnswer(roomId, player, answer) {
         else {
             game.gameState.score += 1;
         }
-
+        console.log("[game:check] Correct! Generating new quesiton and emitting game state");
         game.generateNewQuestion();
         game.emitGameState();
     }
