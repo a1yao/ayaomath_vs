@@ -1,5 +1,7 @@
 import React from 'react';
 
+// TODO: Replace buttons with button components
+
 const GameOverlay = ({ isVisible, isWinner, onReturnHome, onReturnToRoom }) => {
   console.log("GameOverlay rendered:", { isVisible, isWinner });
   

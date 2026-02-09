@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import Game from "./GamePage";
+import Button from "../components/Button";
 import { joinRoomAPI, leaveRoomAPI, onRoomUpdateAPI, setReadyAPI, onCountdownTickAPI, onGameStartAPI, onGameLeaveAPI } from "../api/RoomSocketAPI";
 
 function Room() {
@@ -57,6 +58,7 @@ function Room() {
             console.log("[game:leave] Game left");
             setInGame(false);
             setIsReady(false);
+            setCountdown(null);
         })
 
         return () => {
@@ -78,7 +80,7 @@ function Room() {
                     </li>
                 ))}
             </ul>
-            <button onClick={readyUp}> {isReady ? "Unready" : "Ready"} </button>
+            <Button onClick={readyUp}> {isReady ? "Unready" : "Ready"} </Button>
 
             {countdown}
         </div>

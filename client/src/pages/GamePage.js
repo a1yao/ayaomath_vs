@@ -72,13 +72,72 @@ const Game = () => {
 
 
   return (
-    <div>
-      <ScoreBar score={score}/>
-      {question}
-      <br></br>
-      <input type="text" autoFocus value={answer} onChange={handleInputChange}/>
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+      {/* Score Bar at top */}
+      <div style={{
+        width: '100%',
+        padding: '20px'
+      }}>
+        <ScoreBar score={score}/>
+      </div>
 
-      <GameOverlay isVisible={gameOver} isWinner={winner === playerNumber} onReturnHome={returnHome} onReturnToRoom={returnToRoom}/>
+      {/* Question and Answer - centered but shifted up */}
+      <div style={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        paddingTop: '80px',
+        padding: '20px'
+      }}>
+        {/* Question Display */}
+        <div style={{
+          textAlign: 'center',
+          marginBottom: '30px'
+        }}>
+          <p style={{
+            fontSize: '32px',
+            fontWeight: 'bold',
+            color: '#333',
+            margin: 0
+          }}>
+            {question} =
+          </p>
+        </div>
+
+        {/* Answer Input */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center'
+        }}>
+          <input 
+            type="text" 
+            autoFocus 
+            value={answer} 
+            onChange={handleInputChange}
+            style={{
+              fontSize: '24px',
+              padding: '15px 20px',
+              border: '2px solid #ddd',
+              borderRadius: '8px',
+              width: '200px',
+              outline: 'none'
+            }}
+          />
+        </div>
+      </div>
+
+      <GameOverlay 
+        isVisible={gameOver} 
+        isWinner={winner === playerNumber} 
+        onReturnHome={returnHome} 
+        onReturnToRoom={returnToRoom}
+      />
     </div>
   )
 }
