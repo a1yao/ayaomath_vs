@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { createRoomAPI } from "../api/RoomSocketAPI";
+import Button from "../components/Button"
 
 
 function CreateRoom() {
@@ -19,11 +20,38 @@ function CreateRoom() {
         }
     }
     return (
-        <div>
-            <h1>
-                <button onClick={() => {navigate('/')}}> Back </button>
-                <button onClick={createRoom}> Create Room </button>
-            </h1>
+        <div style={{
+            minHeight: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#f5f5f5',
+            padding: '20px',
+            fontFamily: 'Arial, sans-serif'
+        }}>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '30px'
+            }}>
+
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '15px',
+                    alignItems: 'center'
+                }}>
+                    <Button onClick={createRoom} color="blue" size="large">
+                        Create Room
+                    </Button>
+
+                    <Button onClick={() => {navigate('/')}} color="gray">
+                        Back
+                    </Button>
+                </div>
+            </div>
         </div>
     );
 }
