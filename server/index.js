@@ -23,7 +23,10 @@ const io = new Server(server, {
     }
 })
 
-
+// Sanity check
+app.get('/', (req, res) => {
+    res.send('Server is running!');
+  });
 
 let users = [];
 
