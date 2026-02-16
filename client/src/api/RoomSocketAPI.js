@@ -1,6 +1,7 @@
 import io from 'socket.io-client'
+import { BACKEND_URL } from '../config';
 
-const socket = io.connect("http://localhost:3001");
+const socket = io.connect(BACKEND_URL);
 
 export async function createRoomAPI() {
     return new Promise((resolve, reject) => {

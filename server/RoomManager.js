@@ -3,7 +3,8 @@ import * as PlayerManager from './PlayerManager.js'
 
 export let rooms = {};
 
-let COUNTDOWN_LENGTH = 3;
+// TODO: Find a better place for this
+let COUNTDOWN_LENGTH = 4;
 
 export function createRoom(roomId, roomSocket) {
     rooms[roomId] = new Room(roomId, roomSocket);

@@ -15,23 +15,7 @@ import Room from './pages/RoomPage';
 const socket = io.connect("http://localhost:3001");
 
 function App() {
-  const [message, setMessage] = useState("");
-  const [messageReceived, setMessageReceived] = useState("");
-  const [roomId, setRoomId] = useState("");
-
-  const sendMessage = () => {
-    socket.emit("send_message", { message, roomId });
-  }
-  const joinRoom = () => {
-    socket.emit("join_room", roomId);
-  }
-
-  useEffect(() => {
-    socket.on("receive_message", (data) => {
-      console.log("received!")
-      setMessageReceived(data.message)
-    }, [socket])
-  })
+  
   return (
     <Router>
       <Routes>
